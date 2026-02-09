@@ -3,11 +3,18 @@ import { motion } from 'framer-motion';
 
 const API_URL = process.env.REACT_APP_BACKEND_URL;
 
-const SEASON_META = {
-  spring: { icon: '\u2740', months: 'Mar 20 — Jun 20', desc: 'Renewal & Growth' },
-  summer: { icon: '\u2600', months: 'Jun 21 — Sep 22', desc: 'Abundance & Energy' },
-  autumn: { icon: '\u2767', months: 'Sep 23 — Dec 20', desc: 'Harvest & Reflection' },
-  winter: { icon: '\u2744', months: 'Dec 21 — Mar 19', desc: 'Rest & Restoration' },
+const SEASON_ICONS = {
+  spring: '\u2740',
+  summer: '\u2600',
+  autumn: '\u2767',
+  winter: '\u2744',
+};
+
+const SEASON_DESCS = {
+  spring: 'Renewal & Growth',
+  summer: 'Abundance & Energy',
+  autumn: 'Harvest & Reflection',
+  winter: 'Rest & Restoration',
 };
 
 function SeasonsPage({ hemisphere, currentSeason }) {
@@ -21,25 +28,15 @@ function SeasonsPage({ hemisphere, currentSeason }) {
   const fetchAllSeasons = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`${API_URL}/api/season?hemisphere=${hemisphere}`);
-      const current = await res.json();
+      const res = await fetch(`${API_URL}/api/seasons/all?hemisphere=${hemisphere}`);
+      const data = await res.json();
 
-      const seasonOrder = ['spring', 'summer', 'autumn', 'winter'];
-      const currentIdx = seasonOrder.indexOf(current.season);
-
-      const seasons = seasonOrder.map((name, i) => {
-        if (name === current.season) {
-          return { ...current, ...SEASON_META[name] };
-        }
-        const isPast = i < currentIdx;
-        return {
-          season: name,
-          percentage_complete: isPast ? 100 : 0,
-          days_remaining: isPast ? 0 : '—',
-          total_days: SEASON_META[name].months,
-          ...SEASON_META[name],
-        };
-      });
+      const seasons = data.map(s => ({
+        ...s,
+        icon: SEASON_ICONS[s.season] || '\u2022',
+        desc: SEASON_DESCS[s.season] || '',
+        months: `${s.start_date} — ${s.end_date}`,
+      }));
 
       setAllSeasons(seasons);
     } catch {
