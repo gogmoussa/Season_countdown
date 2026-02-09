@@ -1,7 +1,7 @@
 /* ===== APP SHELL ===== */
 .app-shell {
-  min-height: 100vh;
-  min-height: 100dvh;
+  height: 100vh;
+  height: 100dvh;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -15,6 +15,7 @@
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
   padding-bottom: calc(80px + var(--safe-bottom, 0px));
+  min-height: 0;
 }
 
 .page {
