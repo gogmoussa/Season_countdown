@@ -38,7 +38,18 @@ function SeasonsPage({ hemisphere, currentSeason }) {
         months: `${s.start_date} — ${s.end_date}`,
       }));
 
-      setAllSeasons(seasons);
+      // Put active season first
+      const currentIdx = seasons.findIndex(s => s.season === currentSeason);
+      if (currentIdx > 0) {
+        const reordered = [
+          seasons[currentIdx],
+          ...seasons.slice(0, currentIdx),
+          ...seasons.slice(currentIdx + 1),
+        ];
+        setAllSeasons(reordered);
+      } else {
+        setAllSeasons(seasons);
+      }
     } catch {
       setAllSeasons([]);
     } finally {
