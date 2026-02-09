@@ -1,0 +1,95 @@
+:root {
+  --bg: #F2F5F3;
+  --fg: #2E4033;
+  --accent: #4A7A58;
+  --track: #E0E7E2;
+  --fill: #4A7A58;
+  --card-bg: rgba(255, 255, 255, 0.45);
+  --card-border: rgba(255, 255, 255, 0.6);
+  --shadow: rgba(74, 122, 88, 0.12);
+}
+
+[data-season="summer"] {
+  --bg: #FDFBF7;
+  --fg: #5C4B2E;
+  --accent: #D99E30;
+  --track: #F2EBD9;
+  --fill: #D99E30;
+  --card-bg: rgba(255, 255, 255, 0.45);
+  --card-border: rgba(255, 255, 255, 0.6);
+  --shadow: rgba(217, 158, 48, 0.12);
+}
+
+[data-season="autumn"] {
+  --bg: #FAF7F5;
+  --fg: #4A2C22;
+  --accent: #A65D46;
+  --track: #EBE3DF;
+  --fill: #A65D46;
+  --card-bg: rgba(255, 255, 255, 0.45);
+  --card-border: rgba(255, 255, 255, 0.6);
+  --shadow: rgba(166, 93, 70, 0.12);
+}
+
+[data-season="winter"] {
+  --bg: #F5F8FA;
+  --fg: #2C3E50;
+  --accent: #5D8AA8;
+  --track: #E3E9EE;
+  --fill: #5D8AA8;
+  --card-bg: rgba(255, 255, 255, 0.45);
+  --card-border: rgba(255, 255, 255, 0.6);
+  --shadow: rgba(93, 138, 168, 0.12);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: 'Manrope', sans-serif;
+  font-weight: 400;
+  color: var(--fg);
+  background-color: var(--bg);
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow-x: hidden;
+  transition: background-color 0.8s ease, color 0.8s ease;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+#root {
+  position: relative;
+  z-index: 1;
+}
+
+.season-heading {
+  font-family: 'Playfair Display', serif;
+  letter-spacing: -0.02em;
+}
+
+.season-body {
+  font-family: 'Manrope', sans-serif;
+  letter-spacing: 0.02em;
+}
