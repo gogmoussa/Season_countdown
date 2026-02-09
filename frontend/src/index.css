@@ -1,51 +1,77 @@
 :root {
   --bg: #F2F5F3;
-  --fg: #2E4033;
-  --accent: #4A7A58;
-  --track: #E0E7E2;
-  --fill: #4A7A58;
-  --card-bg: rgba(255, 255, 255, 0.45);
-  --card-border: rgba(255, 255, 255, 0.6);
-  --shadow: rgba(74, 122, 88, 0.12);
+  --bg-deep: #E8EDE9;
+  --fg: #1A2F22;
+  --fg-muted: #5A6E60;
+  --accent: #3D7A52;
+  --accent-glow: rgba(61, 122, 82, 0.25);
+  --track: #D6DED8;
+  --fill: #3D7A52;
+  --card-bg: rgba(255, 255, 255, 0.55);
+  --card-border: rgba(255, 255, 255, 0.7);
+  --shadow: rgba(61, 122, 82, 0.1);
+  --particle: #3D7A52;
+  --gradient-start: #E8F0EA;
+  --gradient-end: #F2F5F3;
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
 }
 
 [data-season="summer"] {
-  --bg: #FDFBF7;
-  --fg: #5C4B2E;
-  --accent: #D99E30;
-  --track: #F2EBD9;
-  --fill: #D99E30;
-  --card-bg: rgba(255, 255, 255, 0.45);
-  --card-border: rgba(255, 255, 255, 0.6);
-  --shadow: rgba(217, 158, 48, 0.12);
+  --bg: #FBF8F2;
+  --bg-deep: #F5EFE3;
+  --fg: #3D3118;
+  --fg-muted: #8A7B5E;
+  --accent: #C48B1A;
+  --accent-glow: rgba(196, 139, 26, 0.25);
+  --track: #EDE5D3;
+  --fill: #C48B1A;
+  --card-bg: rgba(255, 255, 255, 0.55);
+  --card-border: rgba(255, 255, 255, 0.7);
+  --shadow: rgba(196, 139, 26, 0.1);
+  --particle: #D4A632;
+  --gradient-start: #F8F0DE;
+  --gradient-end: #FBF8F2;
 }
 
 [data-season="autumn"] {
-  --bg: #FAF7F5;
-  --fg: #4A2C22;
-  --accent: #A65D46;
-  --track: #EBE3DF;
-  --fill: #A65D46;
-  --card-bg: rgba(255, 255, 255, 0.45);
-  --card-border: rgba(255, 255, 255, 0.6);
-  --shadow: rgba(166, 93, 70, 0.12);
+  --bg: #F9F5F2;
+  --bg-deep: #F0EAE5;
+  --fg: #3A221A;
+  --fg-muted: #7D5F52;
+  --accent: #9B5038;
+  --accent-glow: rgba(155, 80, 56, 0.25);
+  --track: #E5DBD5;
+  --fill: #9B5038;
+  --card-bg: rgba(255, 255, 255, 0.55);
+  --card-border: rgba(255, 255, 255, 0.7);
+  --shadow: rgba(155, 80, 56, 0.1);
+  --particle: #B86B4A;
+  --gradient-start: #F0E6DE;
+  --gradient-end: #F9F5F2;
 }
 
 [data-season="winter"] {
-  --bg: #F5F8FA;
-  --fg: #2C3E50;
-  --accent: #5D8AA8;
-  --track: #E3E9EE;
-  --fill: #5D8AA8;
-  --card-bg: rgba(255, 255, 255, 0.45);
-  --card-border: rgba(255, 255, 255, 0.6);
-  --shadow: rgba(93, 138, 168, 0.12);
+  --bg: #F3F6F9;
+  --bg-deep: #E5EBF1;
+  --fg: #1C2D3D;
+  --fg-muted: #5A7088;
+  --accent: #4A7FA0;
+  --accent-glow: rgba(74, 127, 160, 0.25);
+  --track: #D5DEE6;
+  --fill: #4A7FA0;
+  --card-bg: rgba(255, 255, 255, 0.55);
+  --card-border: rgba(255, 255, 255, 0.7);
+  --shadow: rgba(74, 127, 160, 0.1);
+  --particle: #7EB3D0;
+  --gradient-start: #E0E9F0;
+  --gradient-end: #F3F6F9;
 }
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 
 html {
@@ -54,16 +80,18 @@ html {
 }
 
 body {
-  font-family: 'Manrope', sans-serif;
+  font-family: 'DM Sans', sans-serif;
   font-weight: 400;
   color: var(--fg);
-  background-color: var(--bg);
+  background: linear-gradient(180deg, var(--gradient-start) 0%, var(--gradient-end) 40%, var(--bg) 100%);
   min-height: 100vh;
   min-height: 100dvh;
   overflow-x: hidden;
-  transition: background-color 0.8s ease, color 0.8s ease;
+  transition: background 1s ease, color 0.8s ease;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overscroll-behavior: none;
+  position: relative;
 }
 
 body::before {
@@ -75,7 +103,7 @@ body::before {
   height: 100%;
   pointer-events: none;
   z-index: 0;
-  opacity: 0.025;
+  opacity: 0.03;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
 }
 
@@ -84,12 +112,12 @@ body::before {
   z-index: 1;
 }
 
-.season-heading {
-  font-family: 'Playfair Display', serif;
-  letter-spacing: -0.02em;
+.serif {
+  font-family: 'Cormorant Garamond', serif;
+  letter-spacing: -0.01em;
 }
 
-.season-body {
-  font-family: 'Manrope', sans-serif;
-  letter-spacing: 0.02em;
+.sans {
+  font-family: 'DM Sans', sans-serif;
+  letter-spacing: 0.01em;
 }
