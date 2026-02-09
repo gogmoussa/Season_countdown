@@ -185,6 +185,54 @@ def get_season(hemisphere: str = "north"):
     return get_season_info(hemisphere)
 
 
+@app.get("/api/seasons/all")
+def get_all_seasons(hemisphere: str = "north"):
+    if hemisphere.lower() not in ("north", "south"):
+        raise HTTPException(status_code=400, detail="Hemisphere must be 'north' or 'south'")
+    
+    import random
+    now = datetime.now(timezone.utc)
+    year = now.year
+    is_south = hemisphere.lower() == "south"
+    
+    seasons_dates = [
+        ("spring", datetime(year, 3, 20), datetime(year, 6, 20)),
+        ("summer", datetime(year, 6, 21), datetime(year, 9, 22)),
+        ("autumn", datetime(year, 9, 23), datetime(year, 12, 20)),
+        ("winter", datetime(year, 12, 21), datetime(year + 1, 3, 19)),
+    ]
+    
+    if is_south:
+        south_map = {"spring": "autumn", "summer": "winter", "autumn": "spring", "winter": "summer"}
+        seasons_dates = [(south_map[n], s, e) for n, s, e in seasons_dates]
+    
+    current = get_season_info(hemisphere, now)
+    current_date = datetime(year, now.month, now.day)
+    
+    results = []
+    for name, start, end in seasons_dates:
+        total = (end - start).days
+        if name == current["season"]:
+            results.append(current)
+        else:
+            elapsed = (current_date - start).days if current_date > end else 0
+            pct = 100.0 if current_date > end else 0.0
+            affs = AFFIRMATIONS.get(name, AFFIRMATIONS["spring"])
+            results.append({
+                "season": name,
+                "hemisphere": hemisphere,
+                "percentage_complete": pct,
+                "days_elapsed": total if pct == 100 else 0,
+                "days_remaining": 0 if pct == 100 else total,
+                "total_days": total,
+                "start_date": start.strftime("%B %d"),
+                "end_date": end.strftime("%B %d"),
+                "affirmation": random.choice(affs),
+            })
+    
+    return results
+
+
 @app.get("/api/affirmation")
 def get_affirmation(season: str = "spring"):
     import random
