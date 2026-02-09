@@ -79,6 +79,10 @@ class SeasonTrackerAPITester:
         """Test season endpoint for southern hemisphere"""
         return self.run_test("Season South", "GET", "api/season", 200, params={"hemisphere": "south"})
 
+    def test_all_seasons(self):
+        """Test all seasons endpoint for northern hemisphere"""
+        return self.run_test("All Seasons North", "GET", "api/seasons/all", 200, params={"hemisphere": "north"})
+
     def test_affirmation(self):
         """Test affirmation endpoint"""
         return self.run_test("Winter Affirmation", "GET", "api/affirmation", 200, params={"season": "winter"})
