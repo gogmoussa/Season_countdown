@@ -122,6 +122,7 @@ def main():
     tester.test_health()
     tester.test_season_north() 
     tester.test_season_south()
+    tester.test_all_seasons()
     tester.test_affirmation()
     tester.test_save_notification_pref()
     tester.test_get_notification_pref()
