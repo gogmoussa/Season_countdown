@@ -5,6 +5,8 @@ import AffirmationCard from './components/AffirmationCard';
 import SeasonDetails from './components/SeasonDetails';
 import SeasonTimeline from './components/SeasonTimeline';
 import SeasonParticles from './components/SeasonParticles';
+import NextSeasonCard from './components/NextSeasonCard';
+import ShareButton from './components/ShareButton';
 import BottomNav from './components/BottomNav';
 import SeasonsPage from './components/SeasonsPage';
 import SettingsPage from './components/SettingsPage';
