@@ -1,0 +1,127 @@
+{
+  "identity": {
+    "name": "E1 - The Anti-AI Designer",
+    "mission": "Create a season-adaptive, nature-inspired progress tracker that feels like a living clock.",
+    "principles": [
+      "Fusion over Imitation: Mix botanical aesthetics with precision tracking.",
+      "Emotion First: Every season must evoke a specific feeling (Hope, Energy, Nostalgia, Silence).",
+      "Content is King: The progress circle is the hero, everything else is supporting.",
+      "Negative Space: Use generous padding to let the season breathe."
+    ]
+  },
+  "theme_strategy": {
+    "name": "The Cycle of Time",
+    "description": "A fluid design that shifts its entire color palette, typography weight, and background texture based on the detected season.",
+    "mode": "Adaptive (Light Mode Base with Seasonal Overlays)",
+    "hemisphere_detection": "Auto-detect via JavaScript Date/Timezone offset or Geolocation API if permitted."
+  },
+  "typography": {
+    "headings": {
+      "family": "Playfair Display, serif",
+      "usage": "Season Names, Hero Text",
+      "weight": "font-medium or font-semibold",
+      "spacing": "tracking-tight"
+    },
+    "body": {
+      "family": "Manrope, sans-serif",
+      "usage": "Progress Stats, Affirmations, Settings",
+      "weight": "font-light to font-normal",
+      "spacing": "tracking-wide"
+    }
+  },
+  "colors": {
+    "spring": {
+      "background": "#F2F5F3",
+      "foreground": "#2E4033",
+      "accent": "#4A7A58",
+      "gradient": "from-green-50 to-emerald-100",
+      "circle_track": "#E0E7E2",
+      "circle_fill": "#4A7A58"
+    },
+    "summer": {
+      "background": "#FDFBF7",
+      "foreground": "#5C4B2E",
+      "accent": "#D99E30",
+      "gradient": "from-amber-50 to-orange-50",
+      "circle_track": "#F2EBD9",
+      "circle_fill": "#D99E30"
+    },
+    "autumn": {
+      "background": "#FAF7F5",
+      "foreground": "#4A2C22",
+      "accent": "#A65D46",
+      "gradient": "from-orange-50 to-stone-100",
+      "circle_track": "#EBE3DF",
+      "circle_fill": "#A65D46"
+    },
+    "winter": {
+      "background": "#F5F8FA",
+      "foreground": "#2C3E50",
+      "accent": "#5D8AA8",
+      "gradient": "from-slate-50 to-sky-100",
+      "circle_track": "#E3E9EE",
+      "circle_fill": "#5D8AA8"
+    }
+  },
+  "layout": {
+    "structure": "Mobile-First Flex Column",
+    "alignment": "Center-aligned Hero, Left-aligned Details (following E1 rules)",
+    "spacing_scale": "Tailwind (p-6, p-8, p-12)",
+    "grid_system": "Single Column for Mobile, Centered Card for Desktop"
+  },
+  "components": {
+    "SeasonProgress": {
+      "type": "Custom SVG Circle",
+      "features": [
+        "Stroke-dasharray animation",
+        "Gradient stroke path",
+        "Central percentage text",
+        "Round line caps"
+      ],
+      "interaction": "Slow fade-in and fill animation on load using Framer Motion"
+    },
+    "AffirmationCard": {
+      "style": "Minimalist Card",
+      "visuals": "Glassmorphism background (bg-white/40) with subtle border",
+      "typography": "Italic Serif for the quote"
+    },
+    "NotificationToggle": {
+      "component": "Shadcn Switch",
+      "customization": "Recolor toggle to match season accent"
+    }
+  },
+  "visual_enhancers": {
+    "textures": "Add a subtle CSS noise overlay (opacity 0.03) to prevent flat 'digital' look.",
+    "shadows": "Soft, colored shadows (shadow-emerald-100/50 for spring, etc.)",
+    "glass": "Backdrop blur (backdrop-blur-md) for overlay elements."
+  },
+  "assets": {
+    "spring_images": [
+      "https://images.unsplash.com/photo-1630206378903-7c9db0cfd855?crop=entropy&cs=srgb&fm=jpg&q=85",
+      "https://images.unsplash.com/photo-1744393761002-e14610b4c417?crop=entropy&cs=srgb&fm=jpg&q=85"
+    ],
+    "summer_images": [
+      "https://images.unsplash.com/photo-1624707787335-15dad2e34a8f?crop=entropy&cs=srgb&fm=jpg&q=85",
+      "https://images.unsplash.com/photo-1720709626262-34eaf9942e43?crop=entropy&cs=srgb&fm=jpg&q=85"
+    ],
+    "autumn_fallback": "Use CSS Gradient: bg-gradient-to-br from-orange-50 via-amber-50 to-stone-100",
+    "winter_fallback": "Use CSS Gradient: bg-gradient-to-br from-slate-50 via-sky-50 to-white"
+  },
+  "instructions_to_main_agent": [
+    "1. Setup Shadcn UI immediately: `npx shadcn-ui@latest init`.",
+    "2. Install `framer-motion` for the progress circle animation.",
+    "3. Create a `SeasonContext` to manage the logic for Hemisphere and Date detection.",
+    "4. Use the specific colors defined in the `colors` object. Do not fallback to default Tailwind colors.",
+    "5. For the Circular Progress, create a custom component using SVG `circle` elements. Do not use a library if possible to keep it lightweight.",
+    "6. Ensure the `AffirmationCard` feels like a physical piece of paper (subtle shadow, off-white bg).",
+    "7. Implement the 'Hemisphere Switch' logic: Northern (Spring=Mar-May) vs Southern (Spring=Sep-Nov).",
+    "8. Push Notifications: Use the Notification API. Ask for permission on a user action (toggle click), never on load."
+  ],
+  "universal_guidelines": [
+    "Don't make generic centered layouts, simplistic gradients, and uniform styling.",
+    "Create depth through layered design elements with z-index hierarchy.",
+    "Use glass-morphism effects with backdrop filters (12-24px blur).",
+    "Every interaction needs micro-animations.",
+    "Use 2-3x more spacing than feels comfortable."
+  ]
+}
