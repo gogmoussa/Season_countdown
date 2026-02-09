@@ -2,26 +2,36 @@ import React from 'react';
 import { motion } from 'framer-motion';
 
 function SeasonDetails({ daysElapsed, daysRemaining, totalDays }) {
+  const items = [
+    { value: daysElapsed, label: 'Days in', testId: 'days-elapsed' },
+    { value: daysRemaining, label: 'Days left', testId: 'days-remaining' },
+    { value: totalDays, label: 'Total', testId: 'total-days' },
+  ];
+
   return (
     <motion.div
       className="details-row"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ delay: 0.5, duration: 0.5 }}
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.7, duration: 0.5 }}
       data-testid="season-details"
     >
-      <div className="detail-item" data-testid="days-elapsed">
-        <span className="detail-value season-heading">{daysElapsed}</span>
-        <span className="detail-label season-body">Days in</span>
-      </div>
-      <div className="detail-item" data-testid="days-remaining">
-        <span className="detail-value season-heading">{daysRemaining}</span>
-        <span className="detail-label season-body">Days left</span>
-      </div>
-      <div className="detail-item" data-testid="total-days">
-        <span className="detail-value season-heading">{totalDays}</span>
-        <span className="detail-label season-body">Total days</span>
-      </div>
+      {items.map((item, i) => (
+        <React.Fragment key={item.testId}>
+          <div className="detail-item" data-testid={item.testId}>
+            <motion.span
+              className="detail-value serif"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.8 + i * 0.1 }}
+            >
+              {item.value}
+            </motion.span>
+            <span className="detail-label sans">{item.label}</span>
+          </div>
+          {i < items.length - 1 && <div className="detail-divider" />}
+        </React.Fragment>
+      ))}
     </motion.div>
   );
 }
