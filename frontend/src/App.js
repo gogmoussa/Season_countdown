@@ -221,6 +221,17 @@ function App() {
                       onRefresh={fetchSeason}
                     />
 
+                    <NextSeasonCard
+                      currentSeason={season}
+                      daysRemaining={seasonData.days_remaining}
+                    />
+
+                    <ShareButton
+                      season={season}
+                      percentage={seasonData.percentage_complete}
+                      daysRemaining={seasonData.days_remaining}
+                    />
+
                     <SeasonTimeline
                       currentSeason={season}
                       hemisphere={hemisphere}
