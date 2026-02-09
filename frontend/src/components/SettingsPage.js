@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const API_URL = process.env.REACT_APP_BACKEND_URL;
 
@@ -7,6 +7,7 @@ function SettingsPage({ hemisphere, onHemisphereChange, deviceId, season, percen
   const [notifEnabled, setNotifEnabled] = useState(false);
   const [permStatus, setPermStatus] = useState('default');
   const [installPrompt, setInstallPrompt] = useState(null);
+  const [notifFeedback, setNotifFeedback] = useState('');
 
   useEffect(() => {
     if ('Notification' in window) {
@@ -30,6 +31,24 @@ function SettingsPage({ hemisphere, onHemisphereChange, deviceId, season, percen
     } catch {}
   };
 
+  const showFeedback = (msg) => {
+    setNotifFeedback(msg);
+    setTimeout(() => setNotifFeedback(''), 3000);
+  };
+
+  const sendNotificationViaSW = async (title, body) => {
+    if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+      navigator.serviceWorker.controller.postMessage({
+        type: 'SHOW_NOTIFICATION',
+        title,
+        body,
+        icon: '/icon-192.png',
+      });
+    } else if ('Notification' in window && Notification.permission === 'granted') {
+      new Notification(title, { body, icon: '/icon-192.png' });
+    }
+  };
+
   const toggleNotif = async () => {
     const newState = !notifEnabled;
 
@@ -37,7 +56,10 @@ function SettingsPage({ hemisphere, onHemisphereChange, deviceId, season, percen
       if (Notification.permission === 'default') {
         const perm = await Notification.requestPermission();
         setPermStatus(perm);
-        if (perm !== 'granted') return;
+        if (perm !== 'granted') {
+          showFeedback('Permission not granted');
+          return;
+        }
       }
       if (Notification.permission === 'denied') {
         setPermStatus('denied');
@@ -55,10 +77,18 @@ function SettingsPage({ hemisphere, onHemisphereChange, deviceId, season, percen
       });
     } catch {}
 
-    if (newState && 'Notification' in window && Notification.permission === 'granted') {
-      new Notification('Season Tracker', {
-        body: `${season.charAt(0).toUpperCase() + season.slice(1)} is ${Math.round(percentage)}% complete!`,
-      });
+    if (newState) {
+      const seasonName = season.charAt(0).toUpperCase() + season.slice(1);
+      await sendNotificationViaSW(
+        'Season Tracker',
+        `${seasonName} is ${Math.round(percentage)}% complete. You'll get daily updates!`
+      );
+      showFeedback('Notifications enabled');
+      localStorage.setItem('season_notif_enabled', 'true');
+      localStorage.setItem('season_notif_last_shown', new Date().toDateString());
+    } else {
+      showFeedback('Notifications disabled');
+      localStorage.removeItem('season_notif_enabled');
     }
   };
 
@@ -135,6 +165,19 @@ function SettingsPage({ hemisphere, onHemisphereChange, deviceId, season, percen
               Notifications are blocked in your browser settings
             </p>
           )}
+          <AnimatePresence>
+            {notifFeedback && (
+              <motion.p
+                className="settings-feedback sans"
+                initial={{ opacity: 0, y: -5 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
+                data-testid="notification-feedback"
+              >
+                {notifFeedback}
+              </motion.p>
+            )}
+          </AnimatePresence>
         </motion.div>
 
         {/* Install App */}
@@ -157,8 +200,8 @@ function SettingsPage({ hemisphere, onHemisphereChange, deviceId, season, percen
             <div className="install-instructions sans" data-testid="install-instructions">
               <p>Open this page in your mobile browser, then:</p>
               <ul>
-                <li><strong>iOS:</strong> Tap Share &rarr; Add to Home Screen</li>
-                <li><strong>Android:</strong> Tap Menu &rarr; Install App</li>
+                <li><strong>iOS:</strong> Tap Share then Add to Home Screen</li>
+                <li><strong>Android:</strong> Tap Menu then Install App</li>
               </ul>
             </div>
           )}
