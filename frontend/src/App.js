@@ -73,6 +73,31 @@ function App() {
   useEffect(() => { fetchSeason(); }, [fetchSeason]);
   useEffect(() => { localStorage.setItem('season_tracker_hemisphere', hemisphere); }, [hemisphere]);
 
+  // Daily notification on app open
+  useEffect(() => {
+    if (!seasonData) return;
+    const enabled = localStorage.getItem('season_notif_enabled');
+    const lastShown = localStorage.getItem('season_notif_last_shown');
+    const today = new Date().toDateString();
+
+    if (enabled === 'true' && lastShown !== today && 'Notification' in window && Notification.permission === 'granted') {
+      const seasonName = seasonData.season.charAt(0).toUpperCase() + seasonData.season.slice(1);
+      const body = `${seasonName} is ${Math.round(seasonData.percentage_complete)}% complete. ${seasonData.days_remaining} days remaining.`;
+
+      if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+        navigator.serviceWorker.controller.postMessage({
+          type: 'SHOW_NOTIFICATION',
+          title: 'Good morning! Season Update',
+          body,
+          icon: '/icon-192.png',
+        });
+      } else {
+        new Notification('Good morning! Season Update', { body, icon: '/icon-192.png' });
+      }
+      localStorage.setItem('season_notif_last_shown', today);
+    }
+  }, [seasonData]);
+
   useEffect(() => {
     const handler = (e) => {
       e.preventDefault();
