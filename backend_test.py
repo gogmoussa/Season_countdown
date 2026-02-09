@@ -4,7 +4,7 @@ import sys
 from datetime import datetime
 
 class SeasonTrackerAPITester:
-    def __init__(self, base_url="https://season-timeline.preview.emergentagent.com"):
+    def __init__(self, base_url="https://05de4df1-35d6-4d26-8ddd-2a815a12c6b8.preview.emergentagent.com"):
         self.base_url = base_url
         self.tests_run = 0
         self.tests_passed = 0
